@@ -1,0 +1,7 @@
+apiVersion: auth.example.com/v1beta1
+kind: Doorman
+metadata:
+  name: example-doorman
+spec:
+  # Add fields here
+  replicas: 3
