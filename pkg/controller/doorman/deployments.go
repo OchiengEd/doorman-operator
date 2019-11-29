@@ -69,9 +69,12 @@ func createDoormanService(cr *authv1beta1.Doorman) *corev1.Service {
 
 // newDoormanDeployment returns a Doorman resource with the same name/namespace as the cr
 func newDoormanDeployment(cr *authv1beta1.Doorman) *appsv1.Deployment {
+	certSecretName := cr.Name + "-cert"
+	databaseSecretName := cr.Name + "-db"
 	labels := map[string]string{
 		"app": cr.Name,
 	}
+
 	return &appsv1.Deployment{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "Deployment",
@@ -106,7 +109,7 @@ func newDoormanDeployment(cr *authv1beta1.Doorman) *appsv1.Deployment {
 									ValueFrom: &corev1.EnvVarSource{
 										SecretKeyRef: &corev1.SecretKeySelector{
 											LocalObjectReference: corev1.LocalObjectReference{
-												Name: "doorman-db",
+												Name: databaseSecretName,
 											},
 											Key: "username",
 										},
@@ -117,7 +120,7 @@ func newDoormanDeployment(cr *authv1beta1.Doorman) *appsv1.Deployment {
 									ValueFrom: &corev1.EnvVarSource{
 										SecretKeyRef: &corev1.SecretKeySelector{
 											LocalObjectReference: corev1.LocalObjectReference{
-												Name: "doorman-db",
+												Name: databaseSecretName,
 											},
 											Key: "password",
 										},
@@ -128,7 +131,7 @@ func newDoormanDeployment(cr *authv1beta1.Doorman) *appsv1.Deployment {
 									ValueFrom: &corev1.EnvVarSource{
 										SecretKeyRef: &corev1.SecretKeySelector{
 											LocalObjectReference: corev1.LocalObjectReference{
-												Name: "doorman-db",
+												Name: databaseSecretName,
 											},
 											Key: "hostname",
 										},
@@ -139,7 +142,7 @@ func newDoormanDeployment(cr *authv1beta1.Doorman) *appsv1.Deployment {
 									ValueFrom: &corev1.EnvVarSource{
 										SecretKeyRef: &corev1.SecretKeySelector{
 											LocalObjectReference: corev1.LocalObjectReference{
-												Name: "doorman-db",
+												Name: databaseSecretName,
 											},
 											Key: "database",
 										},
@@ -166,7 +169,7 @@ func newDoormanDeployment(cr *authv1beta1.Doorman) *appsv1.Deployment {
 							Name: "certs",
 							VolumeSource: corev1.VolumeSource{
 								Secret: &corev1.SecretVolumeSource{
-									SecretName: "doorman-cert",
+									SecretName: certSecretName,
 								},
 							},
 						},

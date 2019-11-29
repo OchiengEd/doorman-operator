@@ -128,6 +128,10 @@ func (r *ReconcileDoorman) isObjectFound(key client.ObjectKey, object runtime.Ob
 }
 
 func (r *ReconcileDoorman) reconcileResources(cr *authv1beta1.Doorman) error {
+	if err := r.reconcileDoormanSecrets(cr); err != nil {
+		return err
+	}
+
 	if err := r.reconcileDeployments(cr); err != nil {
 		return err
 	}
