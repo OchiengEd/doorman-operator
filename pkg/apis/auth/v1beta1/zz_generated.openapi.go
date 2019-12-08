@@ -70,20 +70,22 @@ func schema_pkg_apis_auth_v1beta1_DoormanSpec(ref common.ReferenceCallback) comm
 				Properties: map[string]spec.Schema{
 					"replicas": {
 						SchemaProps: spec.SchemaProps{
-							Description: "INSERT ADDITIONAL SPEC FIELDS - desired state of cluster Important: Run \"operator-sdk generate k8s\" to regenerate code after modifying this file Add custom validation using kubebuilder tags: https://book-v1.book.kubebuilder.io/beyond_basics/generating_crd.html",
+							Description: "Define number of instances to be deployed",
 							Type:        []string{"integer"},
 							Format:      "int32",
 						},
 					},
-					"capacity": {
+					"database": {
 						SchemaProps: spec.SchemaProps{
-							Type:   []string{"integer"},
-							Format: "int32",
+							Description: "Define database config Database size should only be provided for operator managed database",
+							Ref:         ref("github.com/OchiengEd/doorman-operator/pkg/apis/auth/v1beta1.DoormanDatabaseSpec"),
 						},
 					},
 				},
 			},
 		},
+		Dependencies: []string{
+			"github.com/OchiengEd/doorman-operator/pkg/apis/auth/v1beta1.DoormanDatabaseSpec"},
 	}
 }
 

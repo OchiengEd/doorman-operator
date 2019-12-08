@@ -31,14 +31,24 @@ spec:
         spec:
           description: DoormanSpec defines the desired state of Doorman
           properties:
-            capacity:
-              format: int32
-              type: integer
+            database:
+              description: Define database config Database size should only be provided
+                for operator managed database
+              properties:
+                hostname:
+                  type: string
+                name:
+                  type: string
+                password:
+                  type: string
+                size:
+                  format: int32
+                  type: integer
+                username:
+                  type: string
+              type: object
             replicas:
-              description: 'INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-                Important: Run "operator-sdk generate k8s" to regenerate code after
-                modifying this file Add custom validation using kubebuilder tags:
-                https://book-v1.book.kubebuilder.io/beyond_basics/generating_crd.html'
+              description: Define number of instances to be deployed
               format: int32
               type: integer
           type: object

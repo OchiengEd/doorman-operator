@@ -10,11 +10,20 @@ import (
 // DoormanSpec defines the desired state of Doorman
 // +k8s:openapi-gen=true
 type DoormanSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "operator-sdk generate k8s" to regenerate code after modifying this file
-	// Add custom validation using kubebuilder tags: https://book-v1.book.kubebuilder.io/beyond_basics/generating_crd.html
+	// Define number of instances to be deployed
 	Replicas int32 `json:"replicas,omitempty"`
-	Capacity int32 `json:"capacity,omitempty"`
+	// Define database config;
+	// Database size should only be provided for operator managed database
+	Storage DoormanDatabaseSpec `json:"database,omitempty"`
+}
+
+// DoormanDatabaseSpec defines the storage of Doorman persistent data
+type DoormanDatabaseSpec struct {
+	Hostname     string `json:"hostname,omitempty"`
+	Username     string `json:"username,omitempty"`
+	Password     string `json:"password,omitempty"`
+	DatabaseName string `json:"name,omitempty"`
+	Size         int32  `json:"size,omitempty"`
 }
 
 // DoormanStatus defines the observed state of Doorman
