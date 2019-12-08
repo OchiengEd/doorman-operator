@@ -3,5 +3,6 @@ kind: Doorman
 metadata:
   name: example-doorman
 spec:
-  # Add fields here
   replicas: 3
+  database:
+    size: 5
