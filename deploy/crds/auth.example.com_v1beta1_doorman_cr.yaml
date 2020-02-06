@@ -5,4 +5,7 @@ metadata:
 spec:
   replicas: 3
   database:
-    size: 5
+    name: "example-doorman"
+    username: "doorman"
+    password_length: 21
+    size: 1

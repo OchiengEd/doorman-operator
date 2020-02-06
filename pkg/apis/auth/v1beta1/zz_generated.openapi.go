@@ -77,7 +77,7 @@ func schema_pkg_apis_auth_v1beta1_DoormanSpec(ref common.ReferenceCallback) comm
 					},
 					"database": {
 						SchemaProps: spec.SchemaProps{
-							Description: "Define database config Database size should only be provided for operator managed database",
+							Description: "Define database config; Database size should only be provided for operator managed database",
 							Ref:         ref("github.com/OchiengEd/doorman-operator/pkg/apis/auth/v1beta1.DoormanDatabaseSpec"),
 						},
 					},

@@ -15,8 +15,7 @@ spec:
       serviceAccountName: doorman-operator
       containers:
         - name: doorman-operator
-          # Replace this with the built image name
-          image: quay.io/eochieng/doorman-operator:v0.0.1
+          image: quay.io/eochieng/doorman-operator:v0.0.3
           command:
           - doorman-operator
           imagePullPolicy: Always

@@ -19,11 +19,10 @@ type DoormanSpec struct {
 
 // DoormanDatabaseSpec defines the storage of Doorman persistent data
 type DoormanDatabaseSpec struct {
-	Hostname     string `json:"hostname,omitempty"`
-	Username     string `json:"username,omitempty"`
-	Password     string `json:"password,omitempty"`
-	DatabaseName string `json:"name,omitempty"`
-	Size         int32  `json:"size,omitempty"`
+	Username       string `json:"username,omitempty"`
+	PasswordLength int    `json:"password_length,omitempty"`
+	DatabaseName   string `json:"name,omitempty"`
+	Size           int32  `json:"size,omitempty"`
 }
 
 // DoormanStatus defines the observed state of Doorman

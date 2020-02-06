@@ -2,6 +2,8 @@ package doorman
 
 import (
 	"context"
+	"math/rand"
+	"time"
 
 	authv1beta1 "github.com/OchiengEd/doorman-operator/pkg/apis/auth/v1beta1"
 	corev1 "k8s.io/api/core/v1"
@@ -43,10 +45,10 @@ func createDatabaseSecret(cr *authv1beta1.Doorman) *corev1.Secret {
 	dbSecret.ObjectMeta.Name = cr.Name + "-db"
 	dbSecret.ObjectMeta.Namespace = cr.Namespace
 	dbSecret.StringData = map[string]string{
-		"database": cr.Name,
-		"hostname": cr.Name,
-		"username": cr.Name,
-		"password": "",
+		"database": cr.Spec.Storage.DatabaseName,
+		"username": cr.Spec.Storage.Username,
+		"root":     generatePassword(cr.Spec.Storage.PasswordLength),
+		"password": generatePassword(cr.Spec.Storage.PasswordLength),
 	}
 	return dbSecret
 }
@@ -78,4 +80,16 @@ func createCertificateSecret(cr *authv1beta1.Doorman) *corev1.Secret {
 	keyPairSecret.Type = corev1.SecretTypeTLS
 
 	return keyPairSecret
+}
+
+func generatePassword(size int) string {
+	charset := []byte("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890$&%*()-_=?/#@!+<>,")
+	password := make([]byte, size)
+	seed := rand.New(rand.NewSource(time.Now().Unix()))
+
+	for i := range password {
+		password[i] = charset[seed.Intn(len(charset))]
+	}
+
+	return string(password)
 }

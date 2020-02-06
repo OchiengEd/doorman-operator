@@ -32,15 +32,13 @@ spec:
           description: DoormanSpec defines the desired state of Doorman
           properties:
             database:
-              description: Define database config Database size should only be provided
+              description: Define database config; Database size should only be provided
                 for operator managed database
               properties:
-                hostname:
-                  type: string
                 name:
                   type: string
-                password:
-                  type: string
+                password_length:
+                  type: integer
                 size:
                   format: int32
                   type: integer

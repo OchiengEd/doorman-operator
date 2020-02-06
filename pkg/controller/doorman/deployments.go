@@ -127,15 +127,8 @@ func newDoormanDeployment(cr *authv1beta1.Doorman) *appsv1.Deployment {
 									},
 								},
 								{
-									Name: "DATABASE_HOST",
-									ValueFrom: &corev1.EnvVarSource{
-										SecretKeyRef: &corev1.SecretKeySelector{
-											LocalObjectReference: corev1.LocalObjectReference{
-												Name: databaseSecretName,
-											},
-											Key: "hostname",
-										},
-									},
+									Name:  "DATABASE_HOST",
+									Value: cr.Name + "-database",
 								},
 								{
 									Name: "DATABASE",
