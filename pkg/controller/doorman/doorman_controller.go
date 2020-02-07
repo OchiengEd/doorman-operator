@@ -132,15 +132,19 @@ func (r *ReconcileDoorman) reconcileResources(cr *authv1beta1.Doorman) error {
 		return err
 	}
 
+	if err := r.reconcileDoormanService(cr); err != nil {
+		return err
+	}
+
+	if err := r.reconcileDatabaseService(cr); err != nil {
+		return err
+	}
+
 	if err := r.reconcileStatefulSet(cr); err != nil {
 		return err
 	}
 
 	if err := r.reconcileDeployments(cr); err != nil {
-		return err
-	}
-
-	if err := r.reconcileServices(cr); err != nil {
 		return err
 	}
 

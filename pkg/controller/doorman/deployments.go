@@ -8,7 +8,6 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
-	"k8s.io/apimachinery/pkg/util/intstr"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 )
 
@@ -24,47 +23,6 @@ func (r *ReconcileDoorman) reconcileDeployments(cr *authv1beta1.Doorman) error {
 	}
 
 	return r.client.Create(context.TODO(), deploy)
-}
-
-func (r *ReconcileDoorman) reconcileServices(cr *authv1beta1.Doorman) error {
-	svc := createDoormanService(cr)
-	found := r.isObjectFound(types.NamespacedName{Name: svc.Name, Namespace: cr.Namespace}, svc)
-	if found {
-		return nil
-	}
-
-	if err := controllerutil.SetControllerReference(cr, svc, r.scheme); err != nil {
-		return err
-	}
-
-	return r.client.Create(context.TODO(), svc)
-}
-
-func createDoormanService(cr *authv1beta1.Doorman) *corev1.Service {
-	labels := map[string]string{
-		"app": cr.Name,
-	}
-
-	return &corev1.Service{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      cr.Name,
-			Namespace: cr.Namespace,
-			Labels:    labels,
-		},
-		Spec: corev1.ServiceSpec{
-			Ports: []corev1.ServicePort{
-				{
-					Name:     "api",
-					Protocol: corev1.ProtocolTCP,
-					Port:     5000,
-					TargetPort: intstr.IntOrString{
-						IntVal: 5000,
-					},
-				},
-			},
-			Selector: map[string]string{},
-		},
-	}
 }
 
 // newDoormanDeployment returns a Doorman resource with the same name/namespace as the cr
