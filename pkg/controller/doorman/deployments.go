@@ -57,9 +57,57 @@ func newDoormanDeployment(cr *authv1beta1.Doorman) *appsv1.Deployment {
 					Labels: labels,
 				},
 				Spec: corev1.PodSpec{
+					InitContainers: []corev1.Container{
+						{
+							Image: "quay.io/eochieng/doorman:v0.0.4",
+							Name:  cr.Name + "-initialize",
+							Env: []corev1.EnvVar{
+								{
+									Name: "DATABASE_USERNAME",
+									ValueFrom: &corev1.EnvVarSource{
+										SecretKeyRef: &corev1.SecretKeySelector{
+											LocalObjectReference: corev1.LocalObjectReference{
+												Name: databaseSecretName,
+											},
+											Key: "username",
+										},
+									},
+								},
+								{
+									Name: "DATABASE_PASSWORD",
+									ValueFrom: &corev1.EnvVarSource{
+										SecretKeyRef: &corev1.SecretKeySelector{
+											LocalObjectReference: corev1.LocalObjectReference{
+												Name: databaseSecretName,
+											},
+											Key: "password",
+										},
+									},
+								},
+								{
+									Name:  "DATABASE_HOST",
+									Value: cr.Name + "-database",
+								},
+								{
+									Name: "DATABASE",
+									ValueFrom: &corev1.EnvVarSource{
+										SecretKeyRef: &corev1.SecretKeySelector{
+											LocalObjectReference: corev1.LocalObjectReference{
+												Name: databaseSecretName,
+											},
+											Key: "database",
+										},
+									},
+								},
+							},
+							Command: []string{
+								"./initialize",
+							},
+						},
+					},
 					Containers: []corev1.Container{
 						{ //List of containers in pod
-							Image: "quay.io/eochieng/doorman:v0.0.3",
+							Image: "quay.io/eochieng/doorman:v0.0.4",
 							Name:  cr.Name,
 							Env: []corev1.EnvVar{
 								{
